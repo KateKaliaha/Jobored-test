@@ -1,5 +1,8 @@
 import { Box, createStyles, Group, rem } from '@mantine/core';
+import { useEffect } from 'react';
 
+import { useAppDispatch } from '../../store';
+import { fetchIndustriesCatalog } from '../../store/industriesSlice';
 import { Form } from './components/Form';
 import { ProfessionCard } from './components/ProfessionCard';
 import { SearchInput } from './components/SearchInput';
@@ -35,7 +38,14 @@ const data = [
 ];
 
 export const MainPage = () => {
+  const dispatch = useAppDispatch();
+
   const { classes } = useStyles();
+
+  useEffect(() => {
+    dispatch(fetchIndustriesCatalog());
+  }, []);
+
   return (
     <Box className={classes.wrapper} component="section">
       <Form />

@@ -13,7 +13,9 @@ import { useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import { SlArrowDown } from 'react-icons/sl';
 
+import { useAppSelector } from '../../../store';
 import { fonts } from '../../../utils/fontVariants';
+import { getTitles } from '../helpers';
 
 const useStyles = createStyles((theme) => ({
   form: {
@@ -93,6 +95,7 @@ const useStyles = createStyles((theme) => ({
 
   dropdown: {
     borderRadius: rem(8),
+    minHeight: rem(20),
     border: `1px solid ${theme.colors.grayVariants[1]}`,
   },
 
@@ -102,6 +105,10 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(14),
     lineHeight: rem(20),
     padding: rem(8),
+    maxWidth: rem(259),
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     color: theme.colors.blackVariants[0],
     '&:hover': {
       backgroundColor: theme.colors.blueVariants[3],
@@ -148,6 +155,9 @@ const useStyles = createStyles((theme) => ({
 
 export function Form() {
   const { classes, cx } = useStyles();
+  const industries = useAppSelector((store) => store.industries.list);
+
+  const titles = getTitles(industries);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -205,13 +215,7 @@ export function Form() {
               })}
             />
           }
-          data={[
-            'IT, интернет, связь, телеком',
-            'Кадры, управление персоналом',
-            'Искусство, культура, развлечения',
-            'Банки, инвестиции, лизинг',
-            'Дизайн',
-          ]}
+          data={titles}
           {...form.getInputProps('industry')}
           data-elem="industry-select"
           onDropdownOpen={toggleSelectStatus}
