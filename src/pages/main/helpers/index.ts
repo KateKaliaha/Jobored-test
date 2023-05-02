@@ -17,9 +17,11 @@ export const getSalaryText = (
   if (payment_from > 0 && payment_to > 0) {
     return `з/п ${payment_from}  - ${payment_to} ${currency}`;
   }
+
   if (payment_from >= 0 && payment_to === 0) {
     return `з/п от ${payment_from} ${currency}`;
   }
+
   if (payment_from === 0 && payment_to > 0) {
     return `з/п ${payment_to} ${currency}`;
   }
@@ -30,6 +32,8 @@ export const getTotalPages = (totalCount: number) => {
     const totalPages = MAX_NUM_ENTITIES / MAX_NUM_PER_PAGE;
     return totalPages;
   }
-  const totalPages = totalCount / MAX_NUM_PER_PAGE;
+
+  const totalPages = Math.ceil(totalCount / MAX_NUM_PER_PAGE);
+
   return totalPages;
 };

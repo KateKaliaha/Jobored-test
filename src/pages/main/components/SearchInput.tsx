@@ -1,6 +1,13 @@
 import { Button, createStyles, rem, TextInput, TextInputProps } from '@mantine/core';
+import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 
+import { useAppDispatch, useAppSelector } from '../../../store';
+import {
+  changeKeyword,
+  changePage,
+  fetchVacanciesCatalog,
+} from '../../../store/vacanciesSlice';
 import { fonts } from '../../../utils/fontVariants';
 
 const useStyles = createStyles((theme) => ({
@@ -45,9 +52,32 @@ const useStyles = createStyles((theme) => ({
 
 export const SearchInput = (props: TextInputProps) => {
   const { classes } = useStyles();
+  const [value, setValue] = useState('');
+  const dispatch = useAppDispatch();
+
+  const { token, payment_from, payment_to, catalogueKey } = useAppSelector(
+    (store) => store.vacancies,
+  );
+
+  const handleClick = () => {
+    dispatch(
+      fetchVacanciesCatalog({
+        token: token as string,
+        page: 0,
+        keyword: value,
+        payment_from: payment_from,
+        payment_to: payment_to,
+        catalogueKey: catalogueKey,
+      }),
+    );
+    dispatch(changeKeyword(value));
+    dispatch(changePage(1));
+  };
 
   return (
     <TextInput
+      value={value}
+      onChange={(event) => setValue(event.currentTarget.value)}
       classNames={{
         input: classes.input,
         icon: classes.icon,
@@ -58,7 +88,14 @@ export const SearchInput = (props: TextInputProps) => {
       size="md"
       mb={rem(16)}
       rightSection={
-        <Button size="xs" className={classes.searchBtn} radius="md" w={83} h={32}>
+        <Button
+          size="xs"
+          className={classes.searchBtn}
+          radius="md"
+          w={83}
+          h={32}
+          onClick={handleClick}
+        >
           Поиск
         </Button>
       }

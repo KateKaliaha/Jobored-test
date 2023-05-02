@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Vacancies, Vacancy } from '../models';
 import { BASE_URL, params } from './queryParams';
@@ -33,24 +33,17 @@ interface paramsFetchVacancies {
   token: string;
   page: number;
   keyword?: string;
-  payment_from?: string;
-  payment_to?: string;
-  catalogues?: string;
+  payment_from: number | null;
+  payment_to: number | null;
+  catalogueKey: number | null;
 }
 
 export const fetchVacanciesCatalog = createAsyncThunk<Vacancies, paramsFetchVacancies>(
   'vacancies/fetchCatalog',
 
-  async ({
-    token,
-    page = '0',
-    keyword = '',
-    payment_from = '',
-    payment_to = '',
-    catalogues = '',
-  }) => {
+  async ({ token, page = '0', keyword = '', payment_from, payment_to, catalogueKey }) => {
     const response = await fetch(
-      `${BASE_URL}${params.VACANCIES_PATH}/?count=${params.COUNT_CARDS_PER_PAGE}&keyword=${keyword}&payment_from=${payment_from}&payment_to=${payment_to}&catalogues=${catalogues}&published=1&page=${page}`,
+      `${BASE_URL}${params.VACANCIES_PATH}/?count=${params.COUNT_CARDS_PER_PAGE}&keyword=${keyword}&payment_from=${payment_from}&payment_to=${payment_to}&catalogues=${catalogueKey}&page=${page}&no_agreement=1`,
       {
         headers: {
           'X-Api-App-Id': params.CLIENT_SECRET,
@@ -71,6 +64,11 @@ interface VacanciesState {
   token: string | null;
   total: number;
   loader: boolean;
+  payment_from: number | null;
+  payment_to: number | null;
+  catalogueKey: number | null;
+  page: number;
+  keyword: string;
 }
 
 const initialState = {
@@ -78,15 +76,35 @@ const initialState = {
   token: null,
   total: 0,
   loader: false,
+  payment_from: null,
+  payment_to: null,
+  catalogueKey: null,
+  page: 1,
+  keyword: '',
 } as VacanciesState;
 
 const vacanciesSlice = createSlice({
   name: 'vacancies',
   initialState,
-  reducers: {},
+  reducers: {
+    changePaymentFrom: (state, action: PayloadAction<number>) => {
+      state.payment_from = action.payload;
+    },
+    changePaymentTo: (state, action: PayloadAction<number>) => {
+      state.payment_to = action.payload;
+    },
+    changeCatalogueKey: (state, action: PayloadAction<number>) => {
+      state.catalogueKey = action.payload;
+    },
+    changePage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload;
+    },
+    changeKeyword: (state, action: PayloadAction<string>) => {
+      state.keyword = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAuth.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state.token = payload;
     });
     builder.addCase(fetchVacanciesCatalog.pending, (state) => {
@@ -104,5 +122,13 @@ const vacanciesSlice = createSlice({
     });
   },
 });
+
+export const {
+  changePaymentFrom,
+  changePaymentTo,
+  changeCatalogueKey,
+  changePage,
+  changeKeyword,
+} = vacanciesSlice.actions;
 
 export default vacanciesSlice.reducer;

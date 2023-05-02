@@ -1,17 +1,9 @@
-import {
-  Box,
-  createStyles,
-  Group,
-  Loader,
-  Overlay,
-  Pagination,
-  rem,
-} from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { Box, createStyles, Loader, Overlay, Pagination, rem } from '@mantine/core';
+import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 import { fetchIndustriesCatalog } from '../../store/industriesSlice';
-import { fetchAuth, fetchVacanciesCatalog } from '../../store/vacanciesSlice';
+import { changePage, fetchAuth, fetchVacanciesCatalog } from '../../store/vacanciesSlice';
 import { Form } from './components/Form';
 import { ProfessionCard } from './components/ProfessionCard';
 import { SearchInput } from './components/SearchInput';
@@ -52,25 +44,32 @@ const useStyles = createStyles((theme) => ({
 export const MainPage = () => {
   const dispatch = useAppDispatch();
 
-  const { token, listVacancies, loader, total } = useAppSelector(
-    (state) => state.vacancies,
-  );
+  const {
+    token,
+    listVacancies,
+    loader,
+    total,
+    payment_from,
+    catalogueKey,
+    payment_to,
+    page,
+    keyword,
+  } = useAppSelector((state) => state.vacancies);
 
   const { classes } = useStyles();
 
-  const [activePage, setPage] = useState(1);
   const pages = getTotalPages(total);
 
   const handleChangePage = (page: number) => {
-    setPage(page);
+    dispatch(changePage(page));
     dispatch(
       fetchVacanciesCatalog({
         token: token as string,
         page: page - 1,
-        keyword: '',
-        payment_from: '',
-        payment_to: '',
-        catalogues: '',
+        keyword: keyword,
+        payment_from: payment_from,
+        payment_to: payment_to,
+        catalogueKey: catalogueKey,
       }),
     );
   };
@@ -85,11 +84,11 @@ export const MainPage = () => {
       dispatch(
         fetchVacanciesCatalog({
           token: token,
-          page: 0,
+          page: page - 1,
           keyword: '',
-          payment_from: '',
-          payment_to: '',
-          catalogues: '',
+          payment_from: null,
+          payment_to: null,
+          catalogueKey: null,
         }),
       );
     }
@@ -105,15 +104,15 @@ export const MainPage = () => {
             <Loader size="xl" color="#5E96FC" />
           </Overlay>
         )}
-        <Group spacing={16} h={600}>
-          <>
-            {listVacancies &&
-              listVacancies.length > 0 &&
-              listVacancies.map((item) => <ProfessionCard key={item.id} item={item} />)}
-          </>
-        </Group>
+        <Box
+          style={{ display: 'flex', flexDirection: 'column', gap: 16, minHeight: 600 }}
+        >
+          {listVacancies &&
+            listVacancies.length > 0 &&
+            listVacancies.map((item) => <ProfessionCard key={item.id} item={item} />)}
+        </Box>
         <Pagination
-          value={activePage}
+          value={page}
           onChange={handleChangePage}
           classNames={{
             control: classes.control,
@@ -121,7 +120,7 @@ export const MainPage = () => {
           total={pages}
           siblings={3}
           defaultValue={1}
-          mt={40}
+          mt={35}
           pb={44}
           spacing={8}
           style={{ alignSelf: 'center' }}

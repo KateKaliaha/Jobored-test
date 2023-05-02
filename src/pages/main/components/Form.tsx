@@ -13,7 +13,14 @@ import { useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import { SlArrowDown } from 'react-icons/sl';
 
-import { useAppSelector } from '../../../store';
+import { useAppDispatch, useAppSelector } from '../../../store';
+import {
+  changeCatalogueKey,
+  changePage,
+  changePaymentFrom,
+  changePaymentTo,
+  fetchVacanciesCatalog,
+} from '../../../store/vacanciesSlice';
 import { fonts } from '../../../utils/fontVariants';
 import { getTitles } from '../helpers';
 
@@ -157,6 +164,37 @@ const useStyles = createStyles((theme) => ({
 export function Form() {
   const { classes, cx } = useStyles();
   const industries = useAppSelector((store) => store.industries.list);
+  const dispatch = useAppDispatch();
+
+  const { token, keyword } = useAppSelector((store) => store.vacancies);
+
+  function handleChange(values: {
+    industry: string;
+    salaryFrom: string;
+    salaryTo: string;
+  }) {
+    const catalogue = industries.find(
+      (industry) => industry.title_rus === values.industry,
+    );
+    dispatch(changePaymentFrom(Number(values.salaryFrom)));
+    dispatch(changePaymentTo(Number(values.salaryTo)));
+
+    if (catalogue) {
+      dispatch(changeCatalogueKey(Number(catalogue.key)));
+    }
+
+    dispatch(
+      fetchVacanciesCatalog({
+        token: token as string,
+        page: 0,
+        keyword: keyword,
+        payment_from: Number(values.salaryFrom),
+        payment_to: Number(values.salaryTo),
+        catalogueKey: catalogue ? catalogue.key : null,
+      }),
+    );
+    dispatch(changePage(1));
+  }
 
   const titles = getTitles(industries);
 
@@ -176,7 +214,7 @@ export function Form() {
       <Box
         className={classes.form}
         component="form"
-        onSubmit={form.onSubmit((values) => console.log(values))}
+        onSubmit={form.onSubmit(handleChange)}
       >
         <Group className={classes.formHeader}>
           <Text size="md" className={classes.formTitle}>
