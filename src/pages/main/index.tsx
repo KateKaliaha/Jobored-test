@@ -15,6 +15,7 @@ import { fetchAuth, fetchVacanciesCatalog } from '../../store/vacanciesSlice';
 import { Form } from './components/Form';
 import { ProfessionCard } from './components/ProfessionCard';
 import { SearchInput } from './components/SearchInput';
+import { getTotalPages } from './helpers';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -51,11 +52,14 @@ const useStyles = createStyles((theme) => ({
 export const MainPage = () => {
   const dispatch = useAppDispatch();
 
-  const { token, listVacancies, loader } = useAppSelector((state) => state.vacancies);
+  const { token, listVacancies, loader, total } = useAppSelector(
+    (state) => state.vacancies,
+  );
 
   const { classes } = useStyles();
 
   const [activePage, setPage] = useState(1);
+  const pages = getTotalPages(total);
 
   const handleChangePage = (page: number) => {
     setPage(page);
@@ -114,10 +118,11 @@ export const MainPage = () => {
           classNames={{
             control: classes.control,
           }}
-          total={3}
+          total={pages}
           siblings={3}
           defaultValue={1}
           mt={40}
+          pb={44}
           spacing={8}
           style={{ alignSelf: 'center' }}
         />

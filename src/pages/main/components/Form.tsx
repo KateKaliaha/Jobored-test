@@ -24,6 +24,7 @@ const useStyles = createStyles((theme) => ({
     borderRadius: rem(12),
     padding: rem(19),
     maxWidth: rem(315),
+    maxHeight: rem(360),
   },
 
   formHeader: {
