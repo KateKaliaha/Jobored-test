@@ -5,3 +5,19 @@ export const getTitles = (data: Industry[]) => {
 
   return titles;
 };
+
+export const getSalaryText = (
+  payment_from: number,
+  payment_to: number,
+  currency: string,
+) => {
+  if (payment_from > 0 && payment_to > 0) {
+    return `з/п ${payment_from}  - ${payment_to} ${currency}`;
+  }
+  if (payment_from >= 0 && payment_to === 0) {
+    return `з/п от ${payment_from} ${currency}`;
+  }
+  if (payment_from === 0 && payment_to > 0) {
+    return `з/п ${payment_to} ${currency}`;
+  }
+};
