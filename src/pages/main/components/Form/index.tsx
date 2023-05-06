@@ -28,14 +28,13 @@ export const Form = () => {
   );
 
   const handleChange: TypeHandleChange = (values) => {
-    const catalogue = industries.find(
-      (industry) => industry.title_rus === values.industry,
-    );
-    dispatch(changePaymentFrom(Number(values.salaryFrom)));
-    dispatch(changePaymentTo(Number(values.salaryTo)));
+    const { salaryFrom, salaryTo, industry } = values;
+    const catalogue = industries.find((item) => item.title_rus === industry);
+    dispatch(changePaymentFrom(salaryFrom));
+    dispatch(changePaymentTo(salaryTo));
 
     if (catalogue) {
-      dispatch(changeCatalogueKey(Number(catalogue.key)));
+      dispatch(changeCatalogueKey(catalogue.key));
     }
 
     if (token) {
@@ -44,12 +43,13 @@ export const Form = () => {
           token,
           page: 0,
           keyword,
-          payment_from: values.salaryFrom ? Number(values.salaryFrom) : '',
-          payment_to: values.salaryFrom ? Number(values.salaryTo) : '',
+          payment_from: salaryFrom ?? '',
+          payment_to: salaryTo ?? '',
           catalogueKey: catalogue ? catalogue.key : '',
         }),
       );
     }
+
     dispatch(changePage(1));
   };
 
