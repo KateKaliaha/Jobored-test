@@ -1,13 +1,15 @@
-import { Box, createStyles, Loader, Overlay, Pagination, rem } from '@mantine/core';
-import { useEffect } from 'react';
+import { Box, createStyles, Pagination, rem, Stack } from '@mantine/core';
 
+import { AppLoader } from '../../components/AppLoader';
+import { VacanciesList } from '../../components/VacanciesList';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { fetchIndustriesCatalog } from '../../store/industriesSlice';
-import { changePage, fetchAuth, fetchVacanciesCatalog } from '../../store/vacanciesSlice';
+import { changePage } from '../../store/mainPageSlice';
+import { fetchVacanciesCatalog } from '../../store/vacanciesSlice';
 import { Form } from './components/Form';
-import { ProfessionCard } from './components/ProfessionCard';
 import { SearchInput } from './components/SearchInput';
 import { getTotalPages } from './helpers';
+
+type TypeHandleChangePage = (page: number) => void;
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -41,76 +43,44 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const MainPage = () => {
-  const dispatch = useAppDispatch();
-
-  const {
-    token,
-    listVacancies,
-    loader,
-    total,
-    payment_from,
-    catalogueKey,
-    payment_to,
-    page,
-    keyword,
-  } = useAppSelector((state) => state.vacancies);
-
+export const Main = () => {
   const { classes } = useStyles();
-
+  const dispatch = useAppDispatch();
+  const { listVacancies, loader, total } = useAppSelector((state) => state.vacancies);
+  const { keyword, catalogueKey, payment_from, payment_to, page } = useAppSelector(
+    (store) => store.mainPage,
+  );
+  const token = useAppSelector((state) => state.auth.token);
   const pages = getTotalPages(total);
 
-  const handleChangePage = (page: number) => {
+  const handleChangePage: TypeHandleChangePage = (page) => {
     dispatch(changePage(page));
-    dispatch(
-      fetchVacanciesCatalog({
-        token: token as string,
-        page: page - 1,
-        keyword: keyword,
-        payment_from: payment_from,
-        payment_to: payment_to,
-        catalogueKey: catalogueKey,
-      }),
-    );
-  };
 
-  useEffect(() => {
-    dispatch(fetchAuth());
-    dispatch(fetchIndustriesCatalog());
-  }, []);
-
-  useEffect(() => {
     if (token) {
       dispatch(
         fetchVacanciesCatalog({
-          token: token,
+          token,
           page: page - 1,
-          keyword: '',
-          payment_from: null,
-          payment_to: null,
-          catalogueKey: null,
+          keyword,
+          payment_from,
+          payment_to,
+          catalogueKey,
         }),
       );
     }
-  }, [token]);
+  };
 
   return (
     <Box className={classes.wrapper} component="section">
       <Form />
       <Box className={classes.contentWrapper}>
         <SearchInput />
-        {loader && (
-          <Overlay color="#202021" opacity={0.2} center>
-            <Loader size="xl" color="#5E96FC" />
-          </Overlay>
-        )}
-        <Box
-          style={{ display: 'flex', flexDirection: 'column', gap: 16, minHeight: 600 }}
-        >
-          {listVacancies &&
-            listVacancies.length > 0 &&
-            listVacancies.map((item) => <ProfessionCard key={item.id} item={item} />)}
-        </Box>
+        {loader && <AppLoader />}
+        <Stack h={600} spacing={15}>
+          {listVacancies && !!listVacancies.length && (
+            <VacanciesList list={listVacancies} />
+          )}
+        </Stack>
         <Pagination
           value={page}
           onChange={handleChangePage}
