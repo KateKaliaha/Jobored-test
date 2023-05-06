@@ -1,7 +1,7 @@
 import { createStyles, Group, rem, Title } from '@mantine/core';
 import { FC } from 'react';
 
-import { ProfessionalCardProps } from '../../models';
+import { ShortVacancyCardProps } from '../../models';
 import { fonts } from '../../utils/fontVariants';
 import { CardButton } from './CardButton';
 
@@ -43,12 +43,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CardHeaderProps = Omit<ProfessionalCardProps, 'space'>;
+type CardHeaderProps = Omit<ShortVacancyCardProps, 'space'>;
 
 export const CardHeader: FC<CardHeaderProps> = ({ item, size, order }) => {
-  const { profession } = item;
-
   const { classes, cx } = useStyles();
+  const { profession } = item;
 
   return (
     <Group position="apart">

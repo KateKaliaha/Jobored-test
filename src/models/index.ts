@@ -102,7 +102,7 @@ export interface Vacancy {
   vacancyRichText: string;
 }
 
-export interface ProfessionalCardProps {
+export interface ShortVacancyCardProps {
   item: Vacancy;
   order: TitleOrder;
   size: string;

@@ -2,7 +2,7 @@ import { createStyles, Group, rem, Text, useMantineTheme } from '@mantine/core';
 import { FC } from 'react';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 
-import { ProfessionalCardProps } from '../../models';
+import { ShortVacancyCardProps } from '../../models';
 import { fonts } from '../../utils/fontVariants';
 
 const useStyles = createStyles((theme) => ({
@@ -13,7 +13,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CardLocationProps = Pick<ProfessionalCardProps, 'item'>;
+type CardLocationProps = Pick<ShortVacancyCardProps, 'item'>;
 
 export const CardLocation: FC<CardLocationProps> = ({ item }) => {
   const { classes } = useStyles();

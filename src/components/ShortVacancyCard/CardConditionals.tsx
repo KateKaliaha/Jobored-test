@@ -1,8 +1,8 @@
 import { createStyles, Group, rem, Text } from '@mantine/core';
 import { FC } from 'react';
 
-import { ProfessionalCardProps } from '../../models';
-import { getSalaryText } from '../../pages/main/helpers';
+import { ShortVacancyCardProps } from '../../models';
+import { getSalaryText } from '../../pages/Main/helpers';
 import { fonts } from '../../utils/fontVariants';
 
 const useStyles = createStyles((theme) => ({
@@ -33,12 +33,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CardConditionalsProps = Omit<ProfessionalCardProps, 'space' | 'order'>;
+type CardConditionalsProps = Omit<ShortVacancyCardProps, 'space' | 'order'>;
 
 export const CardConditionals: FC<CardConditionalsProps> = ({ item, size }) => {
   const { classes, cx } = useStyles();
   const { payment_to, type_of_work, currency, payment_from } = item;
-
   const text = getSalaryText(payment_from, payment_to, currency);
 
   return (

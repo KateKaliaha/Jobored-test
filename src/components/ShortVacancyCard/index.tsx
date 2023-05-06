@@ -2,7 +2,7 @@ import { Card, createStyles, Stack } from '@mantine/core';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ProfessionalCardProps } from '../../models';
+import { ShortVacancyCardProps } from '../../models';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { fetchVacancyById } from '../../store/vacanciesSlice';
 import { CardConditionals } from './CardConditionals';
@@ -18,32 +18,30 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-export const ShortVacancyCard: FC<ProfessionalCardProps> = ({
+export const ShortVacancyCard: FC<ShortVacancyCardProps> = ({
   item,
   order,
   size,
   space,
 }) => {
   const { classes } = useStyles();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { id } = item;
   const token = useAppSelector((state) => state.auth.token) as string;
 
-  const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
-
-  const openCard = async (id: number) => {
-    await dispatch(fetchVacancyById({ id: id.toString(), token: token }));
+  const openCard = async () => {
+    await dispatch(fetchVacancyById({ id, token }));
     navigate(`/${id}`);
   };
 
   return (
     <Card
       className={classes.card}
-      padding="24px 23px 24px 23px"
+      padding="24px 23px"
       radius="md"
       withBorder
-      onClick={() => openCard(id)}
+      onClick={openCard}
       data-elem={`vacancy-${id}`}
     >
       <Stack spacing={space}>

@@ -1,10 +1,15 @@
 import { createStyles, useMantineTheme } from '@mantine/core';
 import { FC, MouseEvent, useState } from 'react';
 
-import { ProfessionalCardProps, Vacancy } from '../../models';
-import { isFav } from '../../pages/main/helpers';
+import { ShortVacancyCardProps, Vacancy } from '../../models';
+import { isFav } from '../../pages/Main/helpers';
 import { useAppDispatch } from '../../store';
 import { addFavorite, removeFavorite } from '../../store/favoritesSlice';
+
+type CardButtonProps = Omit<ShortVacancyCardProps, 'space' | 'order'>;
+type TypeToggleFavoriteStatus = (
+  event: MouseEvent<SVGSVGElement, globalThis.MouseEvent>,
+) => void;
 
 const useStyles = createStyles((theme) => ({
   star: {
@@ -20,27 +25,21 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CardButtonProps = Omit<ProfessionalCardProps, 'space' | 'order'>;
-
 export const CardButton: FC<CardButtonProps> = ({ item, size }) => {
-  const { id } = item;
-
   const { classes, cx } = useStyles();
   const { colors } = useMantineTheme();
-
+  const dispatch = useAppDispatch();
+  const { id } = item;
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const dispatch = useAppDispatch();
-
-  const toggleFavoriteStatus = (
-    event: MouseEvent<SVGSVGElement, globalThis.MouseEvent>,
-  ) => {
+  const toggleFavoriteStatus: TypeToggleFavoriteStatus = (event) => {
     event.stopPropagation();
     setIsFavorite(!isFavorite);
     const fav = isFav(id);
     const favoriteCards: Vacancy[] = localStorage.getItem('fav')
       ? JSON.parse(localStorage.getItem('fav') as string)
       : [];
+
     if (!fav) {
       const favs = [...favoriteCards, item];
       localStorage.setItem('fav', JSON.stringify(favs));
