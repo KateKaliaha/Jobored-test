@@ -1,20 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// import { Vacancy } from '../models';
-
 interface MainPageState {
-  // listVacancies: Vacancy[];
-  // total: number;
-  payment_from: number | string;
-  payment_to: number | string;
+  payment_from: string;
+  payment_to: string;
   catalogueKey: number | string;
   page: number;
   keyword: string;
 }
 
 const initialState = {
-  // listVacancies: [],
-  // total: 0,
   payment_from: '',
   payment_to: '',
   catalogueKey: '',
@@ -26,10 +20,10 @@ const mainPageStateSlice = createSlice({
   name: 'mainPage',
   initialState,
   reducers: {
-    changePaymentFrom: (state, action: PayloadAction<number | string>) => {
+    changePaymentFrom: (state, action: PayloadAction<string>) => {
       state.payment_from = action.payload;
     },
-    changePaymentTo: (state, action: PayloadAction<number | string>) => {
+    changePaymentTo: (state, action: PayloadAction<string>) => {
       state.payment_to = action.payload;
     },
     changeCatalogueKey: (state, action: PayloadAction<number | string>) => {

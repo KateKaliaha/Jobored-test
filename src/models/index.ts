@@ -111,8 +111,8 @@ export interface ShortVacancyCardProps {
 
 export interface FormValues {
   industry: string;
-  salaryFrom: string | number;
-  salaryTo: string | number;
+  salaryFrom: string;
+  salaryTo: string;
 }
 
 export interface FormInputProps {
