@@ -1,41 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { Vacancies, Vacancy } from '../models';
 import { BASE_URL, params } from './queryParams';
-
-interface auth {
-  access_token: string;
-  refresh_token: string;
-  ttl: number;
-  expires_in: number;
-  token_type: string;
-  reg_user_resumes_count: number;
-}
-
-export const fetchAuth = createAsyncThunk<string>(
-  'vacancies/fetchAuth',
-
-  async () => {
-    const response = await fetch(
-      `${BASE_URL}${params.AUTH_PATH}?login=${params.LOGIN}&password=${params.PASSWORD}&client_id=${params.CLIENT_ID}&client_secret=${params.CLIENT_SECRET}&hr=${params.HR}`,
-      {
-        headers: params.HEADERS,
-      },
-    );
-
-    const data: auth = await response.json();
-
-    return data.access_token;
-  },
-);
 
 interface paramsFetchVacancies {
   token: string;
   page: number;
   keyword?: string;
-  payment_from: number | null;
-  payment_to: number | null;
-  catalogueKey: number | null;
+  payment_from: number | string;
+  payment_to: number | string;
+  catalogueKey: number | string;
 }
 
 export const fetchVacanciesCatalog = createAsyncThunk<Vacancies, paramsFetchVacancies>(
@@ -47,7 +21,7 @@ export const fetchVacanciesCatalog = createAsyncThunk<Vacancies, paramsFetchVaca
       {
         headers: {
           'X-Api-App-Id': params.CLIENT_SECRET,
-          'x-secret-key': 'GEU4nvd3rej*jeh.eqp',
+          'x-secret-key': params.X_SECRET_KEY,
           Authorization: `Bearer ${token}`,
         },
       },
@@ -59,54 +33,48 @@ export const fetchVacanciesCatalog = createAsyncThunk<Vacancies, paramsFetchVaca
   },
 );
 
+interface paramsFetchVacancy {
+  id: string;
+  token: string;
+}
+
+export const fetchVacancyById = createAsyncThunk<Vacancy, paramsFetchVacancy>(
+  'vacancy/fetchVacancy',
+
+  async ({ id, token }) => {
+    const response = await fetch(`${BASE_URL}${params.VACANCIES_PATH}/${id}`, {
+      headers: {
+        'X-Api-App-Id': params.CLIENT_SECRET,
+        'x-secret-key': params.X_SECRET_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data: Vacancy = await response.json();
+
+    return data;
+  },
+);
+
 interface VacanciesState {
   listVacancies: Vacancy[];
-  token: string | null;
+  vacancy: Vacancy | null;
   total: number;
   loader: boolean;
-  payment_from: number | null;
-  payment_to: number | null;
-  catalogueKey: number | null;
-  page: number;
-  keyword: string;
 }
 
 const initialState = {
   listVacancies: [],
-  token: null,
+  vacancy: null,
   total: 0,
   loader: false,
-  payment_from: null,
-  payment_to: null,
-  catalogueKey: null,
-  page: 1,
-  keyword: '',
 } as VacanciesState;
 
 const vacanciesSlice = createSlice({
   name: 'vacancies',
   initialState,
-  reducers: {
-    changePaymentFrom: (state, action: PayloadAction<number>) => {
-      state.payment_from = action.payload;
-    },
-    changePaymentTo: (state, action: PayloadAction<number>) => {
-      state.payment_to = action.payload;
-    },
-    changeCatalogueKey: (state, action: PayloadAction<number>) => {
-      state.catalogueKey = action.payload;
-    },
-    changePage: (state, action: PayloadAction<number>) => {
-      state.page = action.payload;
-    },
-    changeKeyword: (state, action: PayloadAction<string>) => {
-      state.keyword = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchAuth.fulfilled, (state, { payload }) => {
-      state.token = payload;
-    });
     builder.addCase(fetchVacanciesCatalog.pending, (state) => {
       state.loader = true;
     });
@@ -120,15 +88,18 @@ const vacanciesSlice = createSlice({
       state.total = 0;
       state.loader = false;
     });
+    builder.addCase(fetchVacancyById.pending, (state) => {
+      state.loader = true;
+    });
+    builder.addCase(fetchVacancyById.fulfilled, (state, action) => {
+      state.vacancy = action.payload;
+      state.loader = false;
+    });
+    builder.addCase(fetchVacancyById.rejected, (state) => {
+      state.vacancy = null;
+      state.loader = false;
+    });
   },
 });
-
-export const {
-  changePaymentFrom,
-  changePaymentTo,
-  changeCatalogueKey,
-  changePage,
-  changeKeyword,
-} = vacanciesSlice.actions;
 
 export default vacanciesSlice.reducer;

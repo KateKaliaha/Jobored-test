@@ -4,7 +4,7 @@ export const params = {
   INDUSTRY_PATH: '2.0/catalogues/',
   AUTH_PATH: '2.0/oauth2/password',
   VACANCIES_PATH: '2.0/vacancies',
-  HEADERS: { 'x-secret-key': 'GEU4nvd3rej*jeh.eqp' },
+  X_SECRET_KEY: 'GEU4nvd3rej*jeh.eqp',
   LOGIN: 'sergei.stralenia@gmail.com',
   PASSWORD: 'paralect123',
   CLIENT_ID: '2356',

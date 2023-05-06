@@ -3,12 +3,20 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Industry } from '../models';
 import { BASE_URL, params } from './queryParams';
 
-export const fetchIndustriesCatalog = createAsyncThunk<Industry[]>(
+interface paramsFetchIndustries {
+  token: string;
+}
+
+export const fetchIndustriesCatalog = createAsyncThunk<Industry[], paramsFetchIndustries>(
   'industries/fetchCatalog',
 
-  async () => {
+  async ({ token }) => {
     const response = await fetch(`${BASE_URL}${params.INDUSTRY_PATH}`, {
-      headers: params.HEADERS,
+      headers: {
+        'X-Api-App-Id': params.CLIENT_SECRET,
+        'x-secret-key': params.X_SECRET_KEY,
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     const data: Industry[] = await response.json();
