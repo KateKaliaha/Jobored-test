@@ -1,12 +1,12 @@
 import { Global } from '@mantine/core';
 
-import interBold from './assets/fonts/Inter/Inter-Bold.ttf';
-import interMedium from './assets/fonts/Inter/Inter-Medium.ttf';
-import interRegular from './assets/fonts/Inter/Inter-Regular.ttf';
-import interSemiBold from './assets/fonts/Inter/Inter-SemiBold.ttf';
-import openSansSemiBold from './assets/fonts/OpenSans/OpenSans-SemiBold.ttf';
-import poppinsRegular from './assets/fonts/Poppins/Poppins-Regular.ttf';
-import poppinsSemiBold from './assets/fonts/Poppins/Poppins-SemiBold.ttf';
+import interBold from '/fonts/Inter/Inter-Bold.ttf';
+import interMedium from '/fonts/Inter/Inter-Medium.ttf';
+import interRegular from '/fonts/Inter/Inter-Regular.ttf';
+import interSemiBold from '/fonts/Inter/Inter-SemiBold.ttf';
+import openSansSemiBold from '/fonts/OpenSans/OpenSans-SemiBold.ttf';
+import poppinsRegular from '/fonts/Poppins/Poppins-Regular.ttf';
+import poppinsSemiBold from '/fonts/Poppins/Poppins-SemiBold.ttf';
 
 export function CustomFonts() {
   return (
