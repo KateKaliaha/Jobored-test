@@ -1,3 +1,6 @@
+import { TitleOrder } from '@mantine/core';
+import { UseFormReturnType } from '@mantine/form';
+
 export interface Industry {
   title_rus: string;
   url_rus: string;
@@ -25,6 +28,7 @@ export interface Vacancy {
   address: null | string;
   profession: string;
   work: string;
+  candidat: string;
   metro: [
     {
       id: number;
@@ -95,4 +99,22 @@ export interface Vacancy {
   firm_name: string;
   firm_activity: string;
   link: string;
+  vacancyRichText: string;
+}
+
+export interface ProfessionalCardProps {
+  item: Vacancy;
+  order: TitleOrder;
+  size: string;
+  space: number;
+}
+
+export interface FormValues {
+  industry: string;
+  salaryFrom: string | number;
+  salaryTo: string | number;
+}
+
+export interface FormInputProps {
+  form: UseFormReturnType<FormValues>;
 }
