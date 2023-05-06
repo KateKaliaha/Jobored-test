@@ -13,7 +13,6 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { NavLink } from 'react-router-dom';
 
-import logo from '../assets/images/logo.svg';
 import { useAppDispatch, useAppSelector } from '../store';
 import { changeActiveLink } from '../store/navSlice';
 import { fonts } from '../utils/fontVariants';
@@ -122,7 +121,7 @@ export const HeaderResponsive = () => {
     <Header height={HEADER_HEIGHT} className={classes.root}>
       <Container className={classes.header}>
         <Paper className={classes.logo}>
-          <Image src={logo} width={30} mr={12} alt="Logo"></Image>
+          <Image src="/images/logo.svg" width={30} mr={12} alt="Logo"></Image>
           <Text
             component="h1"
             size={24}

@@ -2,7 +2,6 @@ import { Box, Button, createStyles, rem, Text } from '@mantine/core';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import noContentImg from '../assets/images/Frame.png';
 import { useAppDispatch } from '../store';
 import { changeActiveLink } from '../store/navSlice';
 import { fonts } from '../utils/fontVariants';
@@ -53,7 +52,7 @@ export const NoContent: FC<NoContentProps> = ({ message }) => {
 
   return (
     <Box className={classes.wrapper}>
-      <Box h={rem(230)} w={240} bg={`url(${noContentImg})`} />
+      <Box h={rem(230)} w={240} bg="url(/images/Frame.png)" />
       <Text size="lg" className={classes.message}>
         {message}
       </Text>
