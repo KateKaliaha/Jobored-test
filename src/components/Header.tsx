@@ -11,13 +11,17 @@ import {
   Transition,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import logo from '../assets/logo.svg';
+import logo from '../assets/images/logo.svg';
+import { useAppDispatch, useAppSelector } from '../store';
+import { changeActiveLink } from '../store/navSlice';
 import { fonts } from '../utils/fontVariants';
+import { links } from '../utils/links';
 
 const HEADER_HEIGHT = rem(84);
+
+type TypeHandleNavigate = (link: string) => () => void;
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -36,7 +40,6 @@ const useStyles = createStyles((theme) => ({
     borderTopLeftRadius: 0,
     borderTopWidth: 0,
     overflow: 'hidden',
-
     [theme.fn.largerThan('sm')]: {
       display: 'none',
     },
@@ -92,17 +95,14 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface HeaderResponsiveProps {
-  links: { link: string; label: string }[];
-}
-
-export const HeaderResponsive = ({ links }: HeaderResponsiveProps) => {
-  const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
+export const HeaderResponsive = () => {
   const { classes, cx } = useStyles();
+  const dispatch = useAppDispatch();
+  const [opened, { toggle }] = useDisclosure(false);
+  const { active } = useAppSelector((state) => state.navigation);
 
-  const handleNavigate = (link: string) => () => {
-    setActive(link);
+  const handleNavigate: TypeHandleNavigate = (link) => () => {
+    dispatch(changeActiveLink(link));
   };
 
   const items = links.map((link) => (
@@ -139,7 +139,7 @@ export const HeaderResponsive = ({ links }: HeaderResponsiveProps) => {
         <Burger opened={opened} onClick={toggle} className={classes.burger} size="md" />
         <Transition transition="pop-top-right" duration={200} mounted={opened}>
           {(styles) => (
-            <Paper className={classes.dropdown} style={styles}>
+            <Paper className={classes.dropdown} style={styles} onClick={toggle}>
               {items}
             </Paper>
           )}
