@@ -121,7 +121,7 @@ export const HeaderResponsive = () => {
     <Header height={HEADER_HEIGHT} className={classes.root}>
       <Container className={classes.header}>
         <Paper className={classes.logo}>
-          <Image src="/images/logo.svg" width={30} mr={12} alt="Logo"></Image>
+          <Image src="./images/logo.svg" width={30} mr={12} alt="Logo"></Image>
           <Text
             component="h1"
             size={24}

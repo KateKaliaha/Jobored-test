@@ -52,7 +52,7 @@ export const NoContent: FC<NoContentProps> = ({ message }) => {
 
   return (
     <Box className={classes.wrapper}>
-      <Box h={rem(230)} w={240} bg="url(/images/Frame.png)" />
+      <Box h={rem(230)} w={240} bg="url(./images/Frame.png)" />
       <Text size="lg" className={classes.message}>
         {message}
       </Text>
