@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Vacancy } from '../models';
-import { MAX_NUM_PER_PAGE } from '../pages/main/helpers';
+import { MAX_NUM_PER_PAGE } from '../pages/Main/helpers';
 
 interface FavoritesState {
   lisFavorites: Vacancy[];

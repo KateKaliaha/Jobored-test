@@ -34,7 +34,7 @@ export const fetchVacanciesCatalog = createAsyncThunk<Vacancies, paramsFetchVaca
 );
 
 interface paramsFetchVacancy {
-  id: string;
+  id: number;
   token: string;
 }
 
