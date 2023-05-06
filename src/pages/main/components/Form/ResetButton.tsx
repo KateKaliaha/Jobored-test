@@ -13,7 +13,6 @@ import { useStyles } from './styles';
 
 export const ResetButton: FC<FormInputProps> = ({ form }) => {
   const { classes } = useStyles();
-
   const dispatch = useAppDispatch();
 
   const resetForm = () => {

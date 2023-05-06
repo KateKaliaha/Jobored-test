@@ -1,4 +1,4 @@
-import { Box, Button, Group, Text } from '@mantine/core';
+import { Box, Button, Group, rem, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 import { FormValues } from '../../../../models';
@@ -88,6 +88,7 @@ export const Form = () => {
         className={classes.submitBtn}
         type="submit"
         radius="md"
+        mt={rem(11)}
         data-elem="search-button"
       >
         Применить
