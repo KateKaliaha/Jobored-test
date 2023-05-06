@@ -1,13 +1,10 @@
-import { Button, createStyles, rem, TextInput, TextInputProps } from '@mantine/core';
+import { Button, createStyles, rem, TextInput } from '@mantine/core';
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 
 import { useAppDispatch, useAppSelector } from '../../../store';
-import {
-  changeKeyword,
-  changePage,
-  fetchVacanciesCatalog,
-} from '../../../store/vacanciesSlice';
+import { changeKeyword, changePage } from '../../../store/mainPageSlice';
+import { fetchVacanciesCatalog } from '../../../store/vacanciesSlice';
 import { fonts } from '../../../utils/fontVariants';
 
 const useStyles = createStyles((theme) => ({
@@ -50,26 +47,29 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const SearchInput = (props: TextInputProps) => {
+export const SearchInput = () => {
   const { classes } = useStyles();
-  const [value, setValue] = useState('');
   const dispatch = useAppDispatch();
-
-  const { token, payment_from, payment_to, catalogueKey } = useAppSelector(
-    (store) => store.vacancies,
+  const { payment_from, payment_to, catalogueKey, keyword } = useAppSelector(
+    (store) => store.mainPage,
   );
+  const token = useAppSelector((state) => state.auth.token);
+  const [value, setValue] = useState(keyword ? keyword : '');
 
   const handleClick = () => {
-    dispatch(
-      fetchVacanciesCatalog({
-        token: token as string,
-        page: 0,
-        keyword: value,
-        payment_from: payment_from,
-        payment_to: payment_to,
-        catalogueKey: catalogueKey,
-      }),
-    );
+    if (token) {
+      dispatch(
+        fetchVacanciesCatalog({
+          token,
+          page: 0,
+          keyword: value,
+          payment_from,
+          payment_to,
+          catalogueKey,
+        }),
+      );
+    }
+
     dispatch(changeKeyword(value));
     dispatch(changePage(1));
   };
@@ -86,6 +86,7 @@ export const SearchInput = (props: TextInputProps) => {
       icon={<BiSearch size="19" style={{ marginTop: 1 }} />}
       radius="md"
       size="md"
+      data-elem="search-input"
       mb={rem(16)}
       rightSection={
         <Button
@@ -94,6 +95,7 @@ export const SearchInput = (props: TextInputProps) => {
           radius="md"
           w={83}
           h={32}
+          data-elem="search-button"
           onClick={handleClick}
         >
           Поиск
@@ -101,7 +103,6 @@ export const SearchInput = (props: TextInputProps) => {
       }
       placeholder="Введите название вакансии"
       rightSectionWidth={83}
-      {...props}
     />
   );
 };
