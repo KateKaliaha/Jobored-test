@@ -1,4 +1,4 @@
-import { Box, createStyles, Pagination, rem, Stack } from '@mantine/core';
+import { Box, Container, createStyles, Pagination, rem, Stack } from '@mantine/core';
 
 import { AppLoader } from '../../components/AppLoader';
 import { VacanciesList } from '../../components/VacanciesList';
@@ -13,11 +13,7 @@ type TypeHandleChangePage = (page: number) => void;
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    paddingLeft: rem(15),
-    paddingRight: rem(15),
     paddingTop: rem(40),
-    maxWidth: rem(1146),
-    margin: '0 auto',
     display: 'flex',
     gap: rem(28),
   },
@@ -71,7 +67,7 @@ export const Main = () => {
   };
 
   return (
-    <Box className={classes.wrapper} component="section">
+    <Container size="xl" px={rem(15)} className={classes.wrapper}>
       <Form />
       <Box className={classes.contentWrapper}>
         <SearchInput />
@@ -96,6 +92,6 @@ export const Main = () => {
           style={{ alignSelf: 'center' }}
         />
       </Box>
-    </Box>
+    </Container>
   );
 };

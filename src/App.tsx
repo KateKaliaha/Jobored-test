@@ -61,6 +61,19 @@ function App() {
             lg: '1.5rem',
             xl: '1.75rem',
           },
+          components: {
+            Container: {
+              defaultProps: {
+                sizes: {
+                  // xs: 540,
+                  // sm: 720,
+                  md: 803,
+                  // lg: 1140,
+                  xl: 1146,
+                },
+              },
+            },
+          },
         }}
         withNormalizeCSS
         withGlobalStyles

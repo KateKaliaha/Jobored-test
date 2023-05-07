@@ -1,4 +1,4 @@
-import { Box, Button, createStyles, rem, Text } from '@mantine/core';
+import { Box, Button, createStyles, Flex, rem, Text } from '@mantine/core';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,14 +8,6 @@ import { fonts } from '../utils/fontVariants';
 import { links } from '../utils/links';
 
 const useStyles = createStyles((theme) => ({
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: rem(32),
-    marginTop: rem(80),
-  },
-
   message: {
     fontFamily: fonts.inter700,
     lineHeight: rem(29),
@@ -51,14 +43,14 @@ export const NoContent: FC<NoContentProps> = ({ message }) => {
   };
 
   return (
-    <Box className={classes.wrapper}>
-      <Box h={rem(230)} w={240} bg="url(./images/Frame.png)" />
+    <Flex gap={32} align="center" mt={80} direction="column">
+      <Box h={230} w={240} bg="url(./images/Frame.png)" />
       <Text size="lg" className={classes.message}>
         {message}
       </Text>
       <Button variant="light" className={classes.button} onClick={handleClickBtn}>
         Поиск Вакансий
       </Button>
-    </Box>
+    </Flex>
   );
 };

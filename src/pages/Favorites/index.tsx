@@ -1,4 +1,4 @@
-import { Box, createStyles, Pagination, rem, Stack } from '@mantine/core';
+import { Container, createStyles, Pagination, rem, Stack } from '@mantine/core';
 import { useEffect, useState } from 'react';
 
 import { AppLoader } from '../../components/AppLoader';
@@ -13,17 +13,6 @@ type TypeHandleChangePage = (page: number) => void;
 const useStyles = createStyles((theme) => ({
   wrapper: {
     paddingTop: rem(40),
-    maxWidth: rem(773),
-    margin: '0 auto',
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-  },
-
-  contentWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
   },
 
   control: {
@@ -63,28 +52,26 @@ export const Favorites = () => {
   }, [lisFavorites]);
 
   return (
-    <Box className={classes.wrapper} component="section">
+    <Container size="md" px={15} className={classes.wrapper}>
       {loader && <AppLoader />}
-      <Box className={classes.contentWrapper}>
-        <Stack spacing={15} mih={600}>
-          {!!cardsFavPerPage.length && <VacanciesList list={cardsFavPerPage} />}
-          {!lisFavorites.length && <NoContent message="Упс, здесь еще ничего нет!" />}
-        </Stack>
-        <Pagination
-          value={page}
-          onChange={handleChangePage}
-          classNames={{
-            control: classes.control,
-          }}
-          total={pages}
-          siblings={3}
-          defaultValue={1}
-          mt={100}
-          pb={44}
-          spacing={8}
-          position="center"
-        />
-      </Box>
-    </Box>
+      <Stack spacing={15} mih={600}>
+        {!!cardsFavPerPage.length && <VacanciesList list={cardsFavPerPage} />}
+        {!lisFavorites.length && <NoContent message="Упс, здесь еще ничего нет!" />}
+      </Stack>
+      <Pagination
+        value={page}
+        onChange={handleChangePage}
+        classNames={{
+          control: classes.control,
+        }}
+        total={pages}
+        siblings={3}
+        defaultValue={1}
+        mt={100}
+        pb={44}
+        spacing={8}
+        position="center"
+      />
+    </Container>
   );
 };

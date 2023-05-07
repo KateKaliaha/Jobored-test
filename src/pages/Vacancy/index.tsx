@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Container,
   createStyles,
   Group,
   Paper,
@@ -16,16 +17,7 @@ import { useAppSelector } from '../../store';
 import { fonts } from '../../utils/fontVariants';
 
 const useStyles = createStyles((theme) => ({
-  wrapper: {
-    paddingTop: rem(40),
-    maxWidth: rem(773),
-    margin: '0 auto',
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-  },
-
-  common: {
+  description: {
     color: theme.colors.blackVariants[0],
 
     p: {
@@ -61,11 +53,11 @@ export const Vacancy = () => {
   const vacancyRichText = card ? card.vacancyRichText.replace(/"/g, '') : '';
 
   return (
-    <Box className={classes.wrapper} component="section" pos={'relative'}>
+    <Container size="md" px={15} pt={40} pos="relative">
       {card && (
         <>
           <Button
-            pos={'absolute'}
+            pos="absolute"
             top={40}
             left={-120}
             leftIcon={<BsArrowLeft size={20} />}
@@ -80,7 +72,7 @@ export const Vacancy = () => {
               <TypographyStylesProvider>
                 <Box
                   dangerouslySetInnerHTML={{ __html: vacancyRichText }}
-                  className={classes.common}
+                  className={classes.description}
                 />
               </TypographyStylesProvider>
             </Paper>
@@ -88,6 +80,6 @@ export const Vacancy = () => {
         </>
       )}
       {!card && <NoContent message="Вакансия не найдена!" />}
-    </Box>
+    </Container>
   );
 };

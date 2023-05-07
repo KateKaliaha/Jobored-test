@@ -48,10 +48,6 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     height: '100%',
-    paddingLeft: rem(15),
-    paddingRight: rem(15),
-    maxWidth: rem(1146),
-    margin: '0 auto',
   },
 
   logo: {
@@ -119,7 +115,7 @@ export const HeaderResponsive = () => {
 
   return (
     <Header height={HEADER_HEIGHT} className={classes.root}>
-      <Container className={classes.header}>
+      <Container size="xl" px={15} className={classes.header}>
         <Paper className={classes.logo}>
           <Image src="./images/logo.svg" width={30} mr={12} alt="Logo"></Image>
           <Text
