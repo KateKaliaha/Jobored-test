@@ -14,7 +14,6 @@ const useStyles = createStyles(() => ({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    cursor: 'pointer',
   },
 }));
 
@@ -47,6 +46,7 @@ export const ShortVacancyCard: FC<ShortVacancyCardProps> = ({
       onClick={() => openCard(size)}
       data-elem={`vacancy-${id}`}
       pos="relative"
+      sx={size === 'md' ? { cursor: 'pointer' } : { cursor: 'default' }}
     >
       <Stack spacing={space}>
         <CardHeader item={item} order={order} size={size} />
