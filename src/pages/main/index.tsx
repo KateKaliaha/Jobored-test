@@ -1,6 +1,6 @@
-import { Box, Container, createStyles, Pagination, rem, Stack } from '@mantine/core';
+import { Container, createStyles, Flex, Pagination, rem, Stack } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
-import { AppLoader } from '../../components/AppLoader';
 import { VacanciesList } from '../../components/VacanciesList';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { changePage } from '../../store/mainPageSlice';
@@ -16,12 +16,11 @@ const useStyles = createStyles((theme) => ({
     paddingTop: rem(40),
     display: 'flex',
     gap: rem(28),
-  },
 
-  contentWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
+    [theme.fn.smallerThan('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
   },
 
   control: {
@@ -42,12 +41,13 @@ const useStyles = createStyles((theme) => ({
 export const Main = () => {
   const { classes } = useStyles();
   const dispatch = useAppDispatch();
-  const { listVacancies, loader, total } = useAppSelector((state) => state.vacancies);
+  const { listVacancies, total } = useAppSelector((state) => state.vacancies);
   const { keyword, catalogueKey, payment_from, payment_to, page } = useAppSelector(
     (store) => store.mainPage,
   );
   const token = useAppSelector((state) => state.auth.token);
   const pages = getTotalPages(total);
+  const largeScreen = useMediaQuery('(min-width: 767px)');
 
   const handleChangePage: TypeHandleChangePage = (page) => {
     dispatch(changePage(page));
@@ -67,12 +67,11 @@ export const Main = () => {
   };
 
   return (
-    <Container size="xl" px={rem(15)} className={classes.wrapper}>
+    <Container size={largeScreen ? 'xl' : 'sm'} px={rem(15)} className={classes.wrapper}>
       <Form />
-      <Box className={classes.contentWrapper}>
+      <Flex direction="column" sx={{ flex: 1 }}>
         <SearchInput />
-        {loader && <AppLoader />}
-        <Stack h={600} spacing={15}>
+        <Stack mih={600} spacing={15} w="100%">
           {listVacancies && !!listVacancies.length && (
             <VacanciesList list={listVacancies} />
           )}
@@ -84,14 +83,14 @@ export const Main = () => {
             control: classes.control,
           }}
           total={pages}
-          siblings={3}
+          siblings={1}
           defaultValue={1}
           mt={35}
           pb={44}
           spacing={8}
           style={{ alignSelf: 'center' }}
         />
-      </Box>
+      </Flex>
     </Container>
   );
 };

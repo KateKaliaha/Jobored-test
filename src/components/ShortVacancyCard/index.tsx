@@ -30,19 +30,23 @@ export const ShortVacancyCard: FC<ShortVacancyCardProps> = ({
   const { id } = item;
   const token = useAppSelector((state) => state.auth.token) as string;
 
-  const openCard = async () => {
-    await dispatch(fetchVacancyById({ id, token }));
-    navigate(`/${id}`);
+  const openCard = async (size: string) => {
+    if (size === 'md') {
+      await dispatch(fetchVacancyById({ id, token }));
+      navigate(`/${id}`);
+    }
+    return;
   };
 
   return (
     <Card
       className={classes.card}
-      padding="24px 23px"
+      padding="24px 54px 24px 23px"
       radius="md"
       withBorder
-      onClick={openCard}
+      onClick={() => openCard(size)}
       data-elem={`vacancy-${id}`}
+      pos="relative"
     >
       <Stack spacing={space}>
         <CardHeader item={item} order={order} size={size} />

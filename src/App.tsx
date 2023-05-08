@@ -1,6 +1,7 @@
 import { MantineProvider } from '@mantine/core';
 import { useEffect } from 'react';
 
+import { AppLoader } from './components/AppLoader';
 import { AppRouter } from './components/Router';
 import { CustomFonts } from './CustomFonts';
 import { useAppDispatch, useAppSelector } from './store';
@@ -10,11 +11,11 @@ import { fetchVacanciesCatalog } from './store/vacanciesSlice';
 
 function App() {
   const dispatch = useAppDispatch();
-  const { auth } = useAppSelector((state) => state.auth);
+  const { auth, token } = useAppSelector((state) => state.auth);
   const { payment_from, catalogueKey, payment_to, page, keyword } = useAppSelector(
     (state) => state.mainPage,
   );
-  const { token } = useAppSelector((state) => state.auth);
+  const { loader } = useAppSelector((state) => state.vacancies);
 
   useEffect(() => {
     if (!auth) {
@@ -55,18 +56,18 @@ function App() {
             blackVariants: ['#232134', '#343A40', '#202021'],
           },
           fontSizes: {
-            xs: '0.875rem',
-            sm: '1rem',
-            md: '1.25rem',
-            lg: '1.5rem',
-            xl: '1.75rem',
+            xs: '0.875rem', //14
+            sm: '1rem', //16
+            md: '1.25rem', //20
+            lg: '1.5rem', //24
+            xl: '1.75rem', //28
           },
           components: {
             Container: {
               defaultProps: {
                 sizes: {
                   // xs: 540,
-                  // sm: 720,
+                  sm: 540,
                   md: 803,
                   // lg: 1140,
                   xl: 1146,
@@ -79,6 +80,7 @@ function App() {
         withGlobalStyles
       >
         <AppRouter />
+        {loader && <AppLoader />}
       </MantineProvider>
     </>
   );

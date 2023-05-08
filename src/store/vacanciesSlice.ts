@@ -17,7 +17,7 @@ export const fetchVacanciesCatalog = createAsyncThunk<Vacancies, paramsFetchVaca
 
   async ({ token, page = '0', keyword = '', payment_from, payment_to, catalogueKey }) => {
     const response = await fetch(
-      `${BASE_URL}${params.VACANCIES_PATH}/?count=${params.COUNT_CARDS_PER_PAGE}&keyword=${keyword}&payment_from=${payment_from}&payment_to=${payment_to}&catalogues=${catalogueKey}&page=${page}&no_agreement=1`,
+      `${BASE_URL}${params.VACANCIES_PATH}/?count=${params.COUNT_CARDS_PER_PAGE}&keyword=${keyword}&payment_from=${payment_from}&payment_to=${payment_to}&catalogues=${catalogueKey}&page=${page}&no_agreement=1&published=1`,
       {
         headers: {
           'X-Api-App-Id': params.CLIENT_SECRET,

@@ -1,4 +1,5 @@
 import { createStyles, Group, rem, Text } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { FC } from 'react';
 
 import { ShortVacancyCardProps } from '../../models';
@@ -18,6 +19,10 @@ const useStyles = createStyles((theme) => ({
 
   salary_lg: {
     fontFamily: fonts.inter700,
+
+    [theme.fn.smallerThan('sm')]: {
+      fontSize: rem(16),
+    },
   },
 
   dot: {
@@ -39,11 +44,12 @@ export const CardConditionals: FC<CardConditionalsProps> = ({ item, size }) => {
   const { classes, cx } = useStyles();
   const { payment_to, type_of_work, currency, payment_from } = item;
   const text = getSalaryText(payment_from, payment_to, currency);
+  const largeScreen = useMediaQuery('(min-width: 767px)');
 
   return (
     <Group spacing={rem(12.5)}>
       <Text
-        size="md"
+        size={largeScreen ? 'md' : 'sm'}
         className={cx(
           classes.salary,
           { [classes.salary_md]: size === 'md' },
@@ -52,7 +58,7 @@ export const CardConditionals: FC<CardConditionalsProps> = ({ item, size }) => {
       >
         {text}
       </Text>
-      <Text size="md" className={classes.dot}>
+      <Text size={largeScreen ? 'md' : 'sm'} className={classes.dot}>
         •
       </Text>
       <Text size="sm" className={classes.info}>

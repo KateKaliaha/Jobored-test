@@ -22,6 +22,9 @@ export const useStyles = createStyles((theme) => ({
     fontFamily: fonts.inter700,
     lineHeight: rem(20),
     color: theme.colors.blackVariants[0],
+    [theme.fn.smallerThan('sm')]: {
+      fontSize: rem(18),
+    },
   },
 
   resetBtn: {
@@ -67,7 +70,7 @@ export const useStyles = createStyles((theme) => ({
 
   label: {
     fontFamily: fonts.inter700,
-    fontSize: rem(16),
+    fontSize: theme.fontSizes.sm,
     lineHeight: rem(19),
     marginBottom: rem(8),
   },
@@ -81,7 +84,7 @@ export const useStyles = createStyles((theme) => ({
   item: {
     borderRadius: rem(8),
     fontFamily: fonts.inter400,
-    fontSize: rem(14),
+    fontSize: theme.fontSizes.xs,
     lineHeight: rem(20),
     padding: rem(8),
     maxWidth: rem(259),

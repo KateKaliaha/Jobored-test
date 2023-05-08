@@ -13,6 +13,7 @@ const useStyles = createStyles((theme) => ({
     lineHeight: rem(29),
     color: theme.colors.blackVariants[1],
     alignItems: 'center',
+    textAlign: 'center',
   },
 
   button: {
@@ -20,7 +21,7 @@ const useStyles = createStyles((theme) => ({
     height: rem(42),
     padding: '10px 24px',
     fontFamily: fonts.openSans600,
-    fontSize: rem(14),
+    fontSize: theme.fontSizes.xs,
     lineHeight: '155%',
     borderRadius: rem(8),
     backgroundColor: theme.colors.blueVariants[3],

@@ -11,7 +11,7 @@ const useStyles = createStyles((theme) => ({
   input: {
     height: rem(48),
     fontFamily: fonts.inter400,
-    fontSize: rem(14),
+    fontSize: theme.fontSizes.xs,
     lineHeight: rem(21),
     border: `1px solid ${theme.colors.whiteVariants[2]}`,
     '&[data-with-icon]': {
@@ -26,6 +26,9 @@ const useStyles = createStyles((theme) => ({
     '&:hover': {
       borderColor: theme.colors.blueVariants[0],
     },
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
 
   icon: {

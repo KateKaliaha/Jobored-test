@@ -9,9 +9,6 @@ const useStyles = createStyles((theme) => ({
   cardTitle: {
     margin: 0,
     maxWidth: rem(680),
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
   },
 
   cardTitle_md: {
@@ -20,6 +17,10 @@ const useStyles = createStyles((theme) => ({
     lineHeight: rem(24),
     fontSize: rem(20),
     fontWeight: 600,
+
+    [theme.fn.smallerThan('sm')]: {
+      fontSize: rem(18),
+    },
   },
 
   cardTitle_lg: {
@@ -28,6 +29,10 @@ const useStyles = createStyles((theme) => ({
     lineHeight: rem(34),
     fontSize: rem(28),
     fontWeight: 700,
+
+    [theme.fn.smallerThan('sm')]: {
+      fontSize: rem(18),
+    },
   },
 
   star: {
@@ -50,7 +55,7 @@ export const CardHeader: FC<CardHeaderProps> = ({ item, size, order }) => {
   const { profession } = item;
 
   return (
-    <Group position="apart">
+    <Group>
       <Title
         order={order}
         className={cx(
@@ -61,7 +66,7 @@ export const CardHeader: FC<CardHeaderProps> = ({ item, size, order }) => {
       >
         {profession}
       </Title>
-      <CardButton item={item} size={size} />
+      <CardButton item={item} />
     </Group>
   );
 };

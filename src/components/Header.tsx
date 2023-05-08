@@ -10,8 +10,8 @@ import {
   Text,
   Transition,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { NavLink } from 'react-router-dom';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../store';
 import { changeActiveLink } from '../store/navSlice';
@@ -54,6 +54,7 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     marginRight: 280,
+    cursor: 'pointer',
     [theme.fn.smallerThan('md')]: {
       marginRight: 'auto',
     },
@@ -95,9 +96,17 @@ export const HeaderResponsive = () => {
   const dispatch = useAppDispatch();
   const [opened, { toggle }] = useDisclosure(false);
   const { active } = useAppSelector((state) => state.navigation);
+  const largeScreen = useMediaQuery('(min-width: 767px)');
+  const navigate = useNavigate();
 
   const handleNavigate: TypeHandleNavigate = (link) => () => {
     dispatch(changeActiveLink(link));
+  };
+
+  const goMainPage = () => {
+    const mainPageLink = links[0].link;
+    dispatch(changeActiveLink(mainPageLink));
+    navigate(mainPageLink);
   };
 
   const items = links.map((link) => (
@@ -115,8 +124,8 @@ export const HeaderResponsive = () => {
 
   return (
     <Header height={HEADER_HEIGHT} className={classes.root}>
-      <Container size="xl" px={15} className={classes.header}>
-        <Paper className={classes.logo}>
+      <Container size={largeScreen ? 'xl' : 'sm'} px={15} className={classes.header}>
+        <Paper className={classes.logo} onClick={goMainPage}>
           <Image src="./images/logo.svg" width={30} mr={12} alt="Logo"></Image>
           <Text
             component="h1"

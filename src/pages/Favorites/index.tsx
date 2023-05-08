@@ -1,7 +1,7 @@
 import { Container, createStyles, Pagination, rem, Stack } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 
-import { AppLoader } from '../../components/AppLoader';
 import { NoContent } from '../../components/NoContent';
 import { VacanciesList } from '../../components/VacanciesList';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -17,7 +17,7 @@ const useStyles = createStyles((theme) => ({
 
   control: {
     fontWeight: 400,
-    fontSize: rem(16),
+    fontSize: theme.fontSizes.sm,
     lineHeight: '140%',
     ':not([data-disabled]):hover': {
       backgroundColor: theme.colors.blueVariants[3],
@@ -34,9 +34,9 @@ export const Favorites = () => {
   const { classes } = useStyles();
   const dispatch = useAppDispatch();
   const { lisFavorites, cardsFavPerPage } = useAppSelector((state) => state.favorites);
-  const loader = useAppSelector((state) => state.vacancies.loader);
   const [page, setPage] = useState(1);
   const pages = getTotalPages(lisFavorites.length);
+  const largeScreen = useMediaQuery('(min-width: 767px)');
 
   const handleChangePage: TypeHandleChangePage = (page) => {
     setPage(page);
@@ -52,8 +52,7 @@ export const Favorites = () => {
   }, [lisFavorites]);
 
   return (
-    <Container size="md" px={15} className={classes.wrapper}>
-      {loader && <AppLoader />}
+    <Container size={largeScreen ? 'md' : 'sm'} px={15} className={classes.wrapper}>
       <Stack spacing={15} mih={600}>
         {!!cardsFavPerPage.length && <VacanciesList list={cardsFavPerPage} />}
         {!lisFavorites.length && <NoContent message="Упс, здесь еще ничего нет!" />}
@@ -65,7 +64,7 @@ export const Favorites = () => {
           control: classes.control,
         }}
         total={pages}
-        siblings={3}
+        siblings={1}
         defaultValue={1}
         mt={100}
         pb={44}

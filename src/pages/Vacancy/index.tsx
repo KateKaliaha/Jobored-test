@@ -1,15 +1,14 @@
 import {
   Box,
-  Button,
   Container,
   createStyles,
   Group,
   Paper,
-  rem,
+  Stack,
   TypographyStylesProvider,
 } from '@mantine/core';
-import { BsArrowLeft } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import { useMediaQuery } from '@mantine/hooks';
+import { useEffect } from 'react';
 
 import { NoContent } from '../../components/NoContent';
 import { ShortVacancyCard } from '../../components/ShortVacancyCard';
@@ -35,39 +34,27 @@ const useStyles = createStyles((theme) => ({
       paddingLeft: 24,
       fontFamily: fonts.inter400,
       lineHeight: '140%',
-      fontSize: rem(16),
+      fontSize: theme.fontSizes.sm,
     },
   },
 }));
 
 export const Vacancy = () => {
   const { classes } = useStyles();
-
   const card = useAppSelector((state) => state.vacancies.vacancy);
-
-  const navigate = useNavigate();
-  const goBack = () => {
-    navigate(-1);
-  };
-
   const vacancyRichText = card ? card.vacancyRichText.replace(/"/g, '') : '';
+  const largeScreen = useMediaQuery('(min-width: 767px)');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
 
   return (
-    <Container size="md" px={15} pt={40} pos="relative">
+    <Container size={largeScreen ? 'md' : 'sm'} px={15} pt={40}>
       {card && (
-        <>
-          <Button
-            pos="absolute"
-            top={40}
-            left={-120}
-            leftIcon={<BsArrowLeft size={20} />}
-            variant="subtle"
-            onClick={goBack}
-          >
-            Назад
-          </Button>
+        <Stack spacing={20}>
           <ShortVacancyCard item={card} order={2} space={16} size={'lg'} />
-          <Group mt={20}>
+          <Group>
             <Paper p={23} pb={18} pt={16} withBorder w="100%">
               <TypographyStylesProvider>
                 <Box
@@ -77,7 +64,7 @@ export const Vacancy = () => {
               </TypographyStylesProvider>
             </Paper>
           </Group>
-        </>
+        </Stack>
       )}
       {!card && <NoContent message="Вакансия не найдена!" />}
     </Container>
