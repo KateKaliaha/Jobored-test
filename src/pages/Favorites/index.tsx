@@ -41,6 +41,7 @@ export const Favorites = () => {
   const handleChangePage: TypeHandleChangePage = (page) => {
     setPage(page);
     dispatch(getFavCardsForPage(page));
+    window.scrollTo(0, 0);
   };
 
   if (cardsFavPerPage.length === 0 && page !== 1) {

@@ -64,6 +64,7 @@ export const Main = () => {
         }),
       );
     }
+    window.scrollTo(0, 0);
   };
 
   return (
