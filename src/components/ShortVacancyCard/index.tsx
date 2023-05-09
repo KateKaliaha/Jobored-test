@@ -9,6 +9,8 @@ import { CardConditionals } from './CardConditionals';
 import { CardHeader } from './CardHeader';
 import { CardLocation } from './CardLocation';
 
+type TypeOpenCard = (size: string) => Promise<void>;
+
 const useStyles = createStyles(() => ({
   card: {
     width: '100%',
@@ -29,7 +31,7 @@ export const ShortVacancyCard: FC<ShortVacancyCardProps> = ({
   const { id } = item;
   const token = useAppSelector((state) => state.auth.token) as string;
 
-  const openCard = async (size: string) => {
+  const openCard: TypeOpenCard = async (size) => {
     if (size === 'md') {
       await dispatch(fetchVacancyById({ id, token }));
       navigate(`/${id}`);
