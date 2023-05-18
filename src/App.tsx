@@ -87,5 +87,5 @@ function App() {
 export default App;
 
 addEventListener('unload', () => {
-  localStorage.delete('auth');
+  localStorage.clear();
 });
