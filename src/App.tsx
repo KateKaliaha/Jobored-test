@@ -18,7 +18,7 @@ function App() {
   const { loader } = useAppSelector((state) => state.vacancies);
 
   useEffect(() => {
-    if (!auth) {
+    if (auth !== true) {
       dispatch(fetchAuth());
     }
   }, []);
