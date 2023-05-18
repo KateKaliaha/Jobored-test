@@ -21,9 +21,7 @@ function App() {
     if (auth !== true) {
       dispatch(fetchAuth());
     }
-  }, []);
 
-  useEffect(() => {
     if (token) {
       dispatch(fetchIndustriesCatalog({ token }));
       dispatch(
@@ -37,7 +35,7 @@ function App() {
         }),
       );
     }
-  }, [token]);
+  }, [token, auth]);
 
   return (
     <>
