@@ -1,2 +1,15 @@
-task: https://startup-summer-2023-dev-task.super.site/  
-deploy: https://katekaliaha.github.io/Jobored-test/
+## Поисковик работы
+
+### О проекте:
+
+Реализация сайта для поиска вакансий с возможностью фильтрации по отраслям, размеру заработной платы, поиску вакансии и добавлением вакансии в избранное.
+
+### Начало работы:
+
+```
+npm run dev
+```
+
+### Технологии:
+
+React, RTK, TypeScript, Mantine, Vite.
